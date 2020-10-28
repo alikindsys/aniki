@@ -9,6 +9,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
 tasks.withType<KotlinCompile>() {
@@ -23,6 +24,7 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-firefox-driver:4.0.0-alpha-6")
     implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.0.0-alpha-6")
     implementation("com.google.code.gson:gson:2.8.6")
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3")
 }
 
 tasks.withType<Jar> {
