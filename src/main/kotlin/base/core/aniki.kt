@@ -3,11 +3,19 @@ package base.core
 import com.google.gson.Gson
 import org.asynchttpclient.uri.Uri
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeDriverLogLevel
+import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel
+import org.openqa.selenium.firefox.FirefoxOptions
 import java.io.File
+import java.util.logging.Level
 
 class aniki {
     companion object {
         val config : Config = getCfg()
+        val driver : WebDriver = getBuiltDriver()
 
         private fun getCfg(): Config {
             val file = File("./config.json")
@@ -15,6 +23,15 @@ class aniki {
                 Config(Driver(DriverType.CHROME, "./chromedriver"),"./Anime")
             } else {
                 Gson().fromJson(file.readText(), Config::class.java)
+            }
+        }
+
+        private fun getBuiltDriver() : WebDriver {
+            System.setProperty("webdriver.chrome.driver",config.driver.path.canonicalPath)
+            System.setProperty("webdriver.gecko.driver",config.driver.path.canonicalPath)
+            return when (config.driver.type){
+                DriverType.GECKO -> FirefoxDriver(FirefoxOptions().setHeadless(true).setLogLevel(FirefoxDriverLogLevel.FATAL))
+                DriverType.CHROME -> ChromeDriver(ChromeOptions().setHeadless(true).setLogLevel(ChromeDriverLogLevel.SEVERE))
             }
         }
 
